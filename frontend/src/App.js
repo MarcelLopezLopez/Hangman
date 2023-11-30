@@ -1,7 +1,6 @@
-// App.js
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
-import './App.css'; // Importar los estilos CSS
+import './App.css'; 
 
 function App() {
   const [nombreJugador, setNombreJugador] = useState('');
@@ -48,7 +47,6 @@ function App() {
       <button className="button" onClick={unirsePartida}>
         Unirse a la Partida
       </button>
-      <p className="message">Identificador de la Partida: {identificadorPartida}</p>
     </div>
   );
 }
