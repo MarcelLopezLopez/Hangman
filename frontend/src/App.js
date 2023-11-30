@@ -1,52 +1,103 @@
+// App.js
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
-import './App.css'; 
+import PartidaCreada from './PartidaCreada';
+import './App.css';
+
+// Funcion para generar aleatoriamente un ID de 4 digitos
+function generarID() {
+  // Genera un número aleatorio entre 1000 y 9999
+  return Math.floor(Math.random() * 9000) + 1000;
+}
 
 function App() {
+  //Funcion para guardar el nombre del usuario
   const [nombreJugador, setNombreJugador] = useState('');
-  const [identificadorPartida, setIdentificadorPartida] = useState('');
-  const socket = io('http://localhost:4567'); // Reemplaza con la URL de tu servidor
+  //FUncion para guardar el identificador de una partida creada
+  const [identificadorPartida, setIdentificadorPartida] = useState(null);
+  //Funcion para validar si se muestra o no la partida creada
+  const [mostrarPartidaCreada, setMostrarPartidaCreada] = useState(false);
+  //Funcion para validar si se muestra o no la partida existente
+  const [mostrarPartidaExistente, setMostrarPartidaExistente] = useState(false);
+  //FUncion para guardar el identificador de una partida existente
+  const [identificadorPartidaExistente, setIdentificadorPartidaExistente] = useState('');
+  const socket = io('http://localhost:4567');
 
   useEffect(() => {
-    // Aquí puedes manejar eventos de socket, por ejemplo, para escuchar cambios en el identificador de la partida
     socket.on('identificadorPartida', (identificador) => {
       setIdentificadorPartida(identificador);
+      setMostrarPartidaCreada(true);
     });
 
-    // No olvides limpiar el evento cuando el componente se desmonta
     return () => {
       socket.off('identificadorPartida');
     };
   }, [socket]);
 
-  const handleNombreChange = (event) => {
+  const handleNameChange = (event) => {
     setNombreJugador(event.target.value);
   };
 
   const iniciarPartida = () => {
-    // Envia el nombre del jugador al servidor junto con la solicitud de inicio de partida
-    socket.emit('iniciarPartida', { nombreJugador });
-    // Lógica para manejar la respuesta del servidor y obtener el identificador de la partida
+    const nuevoIdentificador = generarID();
+
+    // Aquí podrías agregar lógica adicional para asegurar que el ID sea único
+    // por ejemplo, verificando si ya existe una partida con ese ID
+
+    socket.emit('CrearPartida', { nombreJugador, identificadorPartida: nuevoIdentificador });
   };
 
-  const unirsePartida = () => {
-    // Envia el nombre del jugador al servidor junto con la solicitud de unirse a la partida
-    socket.emit('unirsePartida', { nombreJugador });
-    // Lógica para manejar la respuesta del servidor y unirse a la partida
+  const unirsePartidaExistente = () => {
+    socket.emit('UnirsePartida', { nombreJugador, identificadorPartidaExistente });
   };
 
   return (
     <div className="container">
-      <label className="label">
-        Nombre del Jugador:
-        <input className="input" type="text" value={nombreJugador} onChange={handleNombreChange} />
-      </label>
-      <button className="button" onClick={iniciarPartida}>
-        Iniciar Partida
-      </button>
-      <button className="button" onClick={unirsePartida}>
-        Unirse a la Partida
-      </button>
+      {mostrarPartidaCreada ? (
+        <PartidaCreada
+          socket={socket}
+          identificadorPartida={identificadorPartida}
+          nombreCreador={nombreJugador}
+        />
+      ) : mostrarPartidaExistente ? (
+        <>
+          <label className="label">
+            Nombre del Jugador:
+            <input className="input" type="text" value={nombreJugador} onChange={handleNameChange} />
+          </label>
+          <label className="label">
+            Identificador de la Partida Existente:
+            <input
+              className="input"
+              type="text"
+              value={identificadorPartidaExistente}
+              onChange={(event) => setIdentificadorPartidaExistente(event.target.value)}
+            />
+          </label>
+          <button className="button" onClick={unirsePartidaExistente}>
+            Unirse a Partida Existente
+          </button>
+        </>
+      ) : (
+        <>
+          <label className="label">
+            Nombre del Jugador:
+            <input className="input" type="text" value={nombreJugador} onChange={handleNameChange} />
+          </label>
+          <button className="button" onClick={iniciarPartida}>
+            Crear Partida
+          </button>
+          {identificadorPartida !== null && (
+            <p>ID de la Partida: {identificadorPartida}</p>
+          )}
+          <button
+            className="button"
+            onClick={() => setMostrarPartidaExistente(true)}
+          >
+            Unirse a Partida Existente
+          </button>
+        </>
+      )}
     </div>
   );
 }
