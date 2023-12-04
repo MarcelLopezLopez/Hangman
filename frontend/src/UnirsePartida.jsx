@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-const UnirsePartida = () => {
-    return(
-        <div><p>UNIDO A LA PARTIDA</p></div>
-    );
+import React from 'react';
+
+const UnirsePartida = ({ nombreUsuario }) => {
+  return (
+    <div>
+      <p>Nombre del Usuario: {nombreUsuario}</p>
+    </div>
+  );
 };
+
 export default UnirsePartida;
