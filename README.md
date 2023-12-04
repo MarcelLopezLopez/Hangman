@@ -11,4 +11,6 @@ Instalaciones necesarias:
 2. En caso de usar VisualStudio, recomendamos la instaclacion de los siguientes paquetes:
     2.1 Extension Pack for Java
     2.2 Spring Boot Extension Pack
+3. Instalar Maven para poder compilar y ejectuar SpringBoot
+    Visitar la siguiente pagina web: https://maven.apache.org/download.cgi
 

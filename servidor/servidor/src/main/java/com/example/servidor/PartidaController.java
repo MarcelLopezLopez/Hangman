@@ -47,6 +47,25 @@ public class PartidaController {
         }
     }
 
+    @PostMapping("/iniciar")
+    public ResponseEntity<String> iniciarPartida(@RequestBody Map<String, String> datos) {
+        try {
+            String identificadorPartida = datos.get("identificador");
+            String nombreUsuario = datos.get("nombreUsuario");
+
+            Partida partida = buscarPartidaPorIdentificador(identificadorPartida);
+
+            if (partida != null) {
+            // Per completar que fem al iniciar partida
+            return ResponseEntity.ok("Partida iniciada");
+            } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Partida no encontrada");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al iniciar la partida");
+        }
+    }
+
     private String generarIdentificador() {
         Random random = new Random();
         int numeroAleatorio = 100000 + random.nextInt(900000);
