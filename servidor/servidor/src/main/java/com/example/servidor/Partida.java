@@ -21,14 +21,6 @@ public class Partida {
         this.identificador = identificador;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
-    }
-
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    }
-
     public List<String> getNombreUsuarios() {
         return nombresUsuarios;
     }

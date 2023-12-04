@@ -20,7 +20,8 @@ public class PartidaController {
     public ResponseEntity<String> crearPartida(@RequestBody String nombreUsuario) {
         try {
             String identificadorGenerado = generarIdentificador();
-            partidasEnJuego.add(new Partida(identificadorGenerado, nombreUsuario));
+            Partida nuevaPartida = new Partida(identificadorGenerado, nombreUsuario)
+            partidasEnJuego.add(nuevaPartida);
             return ResponseEntity.ok(identificadorGenerado);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear la partida");
@@ -36,7 +37,8 @@ public class PartidaController {
             Partida partida = buscarPartidaPorIdentificador(identificadorPartida);
 
             if (partida != null) {
-                return ResponseEntity.ok("Partida en juego");
+                partida.agregarUsuario(nombreUsuario);
+                return ResponseEntity.ok("Te has unido a la partida");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Partida no encontrada");
             }
