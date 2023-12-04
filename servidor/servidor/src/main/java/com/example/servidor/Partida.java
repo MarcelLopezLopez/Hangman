@@ -3,14 +3,13 @@ package com.example.servidor;
 
 public class Partida {
     private String identificador;
-    private String nombreUsuario;
-    private String nombreUsuario2;
+    private List<String> nombresUsuarios;
 
     // Constructor, getters y setters
-    public Partida(String identificador, String nombreUsuario, String nombreUsuario2) {
+    public Partida(String identificador, String primerUsuario) {
         this.identificador = identificador;
-        this.nombreUsuario = nombreUsuario;
-        this.nombreUsuario2 = nombreUsuario2;
+        this.nombresUsuarios = new ArrayList<>();
+        this.nombresUsuarios.add(primerUsuario);
 
     }
 
@@ -30,11 +29,11 @@ public class Partida {
         this.nombreUsuario = nombreUsuario;
     }
 
-    public String getNombreUsuario2() {
-        return nombreUsuario2;
+    public List<String> getNombreUsuarios() {
+        return nombresUsuarios;
     }
 
-    public void setNombreUsuario2(String nombreUsuario2) {
-        this.nombreUsuario2 = nombreUsuario2;
+    public void agregarUsuario(String nombreUsuario) {
+        this.nombresUsuarios.add(nombreUsuario);
     }
 }
