@@ -12,6 +12,7 @@ import java.util.Random;
 
 @RestController
 @RequestMapping("/api/partida")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PartidaController {
 
     private List<Partida> partidasEnJuego = new ArrayList<>();
