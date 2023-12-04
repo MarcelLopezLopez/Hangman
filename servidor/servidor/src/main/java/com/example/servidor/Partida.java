@@ -1,6 +1,9 @@
 // Partida.java
 package com.example.servidor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Partida {
     private String identificador;
     private List<String> nombresUsuarios;
