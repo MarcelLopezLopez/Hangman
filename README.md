@@ -8,4 +8,7 @@ Instalaciones necesarias:
               Per executar: npm start
  1.2 Linux: Instalar npm: sudo apt install npm, se puede verificar con npm --version
             Instala la utilidad create-react-app: sudo npm -g install create-react-app
+2. En caso de usar VisualStudio, recomendamos la instaclacion de los siguientes paquetes:
+    2.1 Extension Pack for Java
+    2.2 Spring Boot Extension Pack
 
