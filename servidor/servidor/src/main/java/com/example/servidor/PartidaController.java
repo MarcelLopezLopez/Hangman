@@ -16,6 +16,15 @@ public class PartidaController {
 
     private List<Partida> partidasEnJuego = new ArrayList<>();
 
+    @GetMapping("/lista")
+    public ResponseEntity<String> mensajeBienvenida() {
+        try {
+            return ResponseEntity.ok("¡Bienvenido!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al procesar la solicitud");
+        }
+    }
+
     @PostMapping("/crear")
     public ResponseEntity<String> crearPartida(@RequestBody String nombreUsuario) {
         try {
@@ -56,10 +65,10 @@ public class PartidaController {
             Partida partida = buscarPartidaPorIdentificador(identificadorPartida);
 
             if (partida != null) {
-            // Per completar que fem al iniciar partida
-            return ResponseEntity.ok("Partida iniciada");
+                // Per completar que fem al iniciar partida
+                return ResponseEntity.ok("Partida iniciada");
             } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Partida no encontrada");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Partida no encontrada");
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al iniciar la partida");
