@@ -20,7 +20,7 @@ public class PartidaController {
     public ResponseEntity<String> crearPartida(@RequestBody String nombreUsuario) {
         try {
             String identificadorGenerado = generarIdentificador();
-            Partida nuevaPartida = new Partida(identificadorGenerado, nombreUsuario)
+            Partida nuevaPartida = new Partida(identificadorGenerado, nombreUsuario);
             partidasEnJuego.add(nuevaPartida);
             return ResponseEntity.ok(identificadorGenerado);
         } catch (Exception e) {
