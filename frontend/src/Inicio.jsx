@@ -8,7 +8,6 @@ const Inicio = () => {
   const [idPartida, setIdPartida] = useState('');
   const [pantalla, setPantalla] = useState('inicio');
   const [identificadorPartida, setIdentificadorPartida] = useState('');
-  const [iniciarPartida, setIniciarPartida] = useState(false);
 
   const handleCrearPartida = async () => {
     if (!nombre) {
@@ -28,7 +27,6 @@ const Inicio = () => {
       if (response.ok) {
         const identificadorGenerado = await response.text();
         setIdentificadorPartida(identificadorGenerado);
-        setIniciarPartida(false);
         setPantalla('crearPartida');
       } else {
         console.error('Error al crear la partida');
@@ -58,33 +56,9 @@ const Inicio = () => {
       if (response.ok) {
         const estadoPartida = await response.text();
         console.log('Estado de la partida:', estadoPartida);
-        setIniciarPartida(true);
         setPantalla('unirsePartida');
       } else {
         console.error('Error al unirse a la partida');
-      }
-    } catch (error) {
-      console.error('Error de red:', error);
-    }
-  };
-
-  const handleIniciarPartida = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/api/partida/iniciar', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          identificador: identificadorPartida,
-          nombreUsuario: nombre,
-        }),
-      });
-
-      if (response.ok) {
-        console.log('Partida iniciada!');
-      } else {
-        console.error('Error al iniciar la partida');
       }
     } catch (error) {
       console.error('Error de red:', error);
@@ -97,15 +71,12 @@ const Inicio = () => {
         return (
           <div className="container">
             <CrearPartida identificadorPartida={identificadorPartida} nombreUsuario={nombre} />
-            {iniciarPartida && (
-              <button onClick={handleIniciarPartida}>Iniciar Partida</button>
-            )}
           </div>
         );
       case 'unirsePartida':
         return (
           <div className="container">
-            <UnirsePartida nombreUsuario={nombre} />
+            <UnirsePartida identificadorPartida={idPartida} nombreUsuario={nombre} />
           </div>
         );
       default:

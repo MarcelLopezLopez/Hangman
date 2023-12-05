@@ -66,13 +66,42 @@ public class PartidaController {
             Partida partida = buscarPartidaPorIdentificador(identificadorPartida);
 
             if (partida != null) {
-                // Per completar que fem al iniciar partida
-                return ResponseEntity.ok("Partida iniciada");
+                if(partida.numJugadors() >= 2){
+                    partida.setEstado(true);
+                    // Llamar a la funcion que ejecuta la partida
+                    return ResponseEntity.ok("Partida iniciada");
+                } else {
+                    partida.setEstado(false);
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Faltan jugadores");
+                }
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Partida no encontrada");
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al iniciar la partida");
+        }
+    }
+
+    @PostMapping("/entrar")
+    public ResponseEntity<String> entrarPartida(@RequestBody Map<String, String> datos) {
+        try {
+            String identificadorPartida = datos.get("identificador");
+            String nombreUsuario = datos.get("nombreUsuario");
+
+            Partida partida = buscarPartidaPorIdentificador(identificadorPartida);
+
+            if (partida != null) {
+                if(partida.getEstado() == true){
+                    // Llamar a la funcion que ejecuta la partida
+                    return ResponseEntity.ok("Partida iniciada");
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La partida no esta iniciada");
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Partida no encontrada");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al entrar la partida");
         }
     }
 
