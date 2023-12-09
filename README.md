@@ -14,3 +14,7 @@ Instalaciones necesarias:
 3. Instalar Maven para poder compilar y ejectuar SpringBoot
     Visitar la siguiente pagina web: https://maven.apache.org/download.cgi
 
+4. Para comunicacion a tiempo real hacer lo siguinete:
+    En el cliente, en /frontend> npm isntall socket.io-client
+    En el
+
