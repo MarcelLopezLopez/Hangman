@@ -175,6 +175,7 @@ public class PartidaController {
             String identificadorGenerado = generarIdentificador();
             Partida nuevaPartida = new Partida(identificadorGenerado, nombreUsuario);
             partidasEnJuego.add(nuevaPartida);
+            System.out.println("Partida Creada con ID: " + identificadorGenerado + " Actualmente hay: " + partidasEnJuego.size() + " partidas");
             return ResponseEntity.ok(identificadorGenerado);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear la partida");
@@ -191,6 +192,7 @@ public class PartidaController {
 
             if (partida != null) {
                 partida.agregarUsuario(nombreUsuario);
+                System.out.println(nombreUsuario + " se ha unido a la partida con ID: " + identificadorPartida);
                 return ResponseEntity.ok("Te has unido a la partida");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Partida no encontrada");
@@ -214,7 +216,7 @@ public class PartidaController {
 
                     // Enviar un evento de inicio de partida a todos los clientes conectados a esta partida
                     socketIoServer.getBroadcastOperations().sendEvent("partidaIniciada", identificadorPartida);
-
+                    System.out.println("La partida con ID: " + identificadorPartida + " ha empezado!!!");
                     return ResponseEntity.ok("Partida iniciada");
                 } else {
                     partida.setEstado(false);

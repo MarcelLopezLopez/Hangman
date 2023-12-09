@@ -78,7 +78,7 @@ const UnirsePartida2 = ({ identificadorPartida, nombreUsuario }) => {
   useEffect(() => {
     // Escucha el evento 'iniciarPartida' desde el servidor
     socket.on('iniciarPartida', () => {
-      setIniciarPartida(true);
+    setIniciarPartida(true);
     });
 
     // Limpia los listeners al desmontar el componente

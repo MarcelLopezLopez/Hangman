@@ -110,6 +110,7 @@ export default Inicio;
 import React, { useState, useEffect } from 'react';
 import CrearPartida from './CrearPartida';
 import UnirsePartida from './UnirsePartida';
+import Juego from './Juego';
 import socket from './Socket';
 
 const Inicio = () => {
@@ -117,6 +118,7 @@ const Inicio = () => {
   const [idPartida, setIdPartida] = useState('');
   const [pantalla, setPantalla] = useState('inicio');
   const [identificadorPartida, setIdentificadorPartida] = useState('');
+  const [creador, setCreador] = useState(false);
 
   useEffect(() => {
     // Escucha el evento 'partidaIniciada' desde el servidor
@@ -203,7 +205,7 @@ const Inicio = () => {
       case 'juego':
         return (
           <div className="container">
-            <p>¡La partida ha comenzado!</p>
+            <Juego creador={creador} nombreUsuario={nombre} identificadorPartida={identificadorPartida} />
           </div>
         );
       default:
