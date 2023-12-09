@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+/*import React, { useState } from 'react';
 import CrearPartida from './CrearPartida';
 import UnirsePartida from './UnirsePartida';
 import './Inicio.css'; // Asegúrate de cambiar el nombre del archivo según sea necesario
@@ -77,6 +77,133 @@ const Inicio = () => {
         return (
           <div className="container">
             <UnirsePartida identificadorPartida={idPartida} nombreUsuario={nombre} />
+          </div>
+        );
+      default:
+        return (
+          <div className="container">
+            <label>
+              Nombre:
+              <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+            </label>
+            <hr />
+            <label>
+              ID de Partida para Unirse:
+              <input type="text" value={idPartida} onChange={(e) => setIdPartida(e.target.value)} />
+            </label>
+            <button onClick={handleCrearPartida}>Crear Partida</button>
+            <button onClick={handleUnirsePartida}>Unirse a Partida</button>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div>
+      {renderPantallaActual()}
+    </div>
+  );
+};
+
+export default Inicio;
+*/
+import React, { useState, useEffect } from 'react';
+import CrearPartida from './CrearPartida';
+import UnirsePartida from './UnirsePartida';
+import socket from './Socket';
+
+const Inicio = () => {
+  const [nombre, setNombre] = useState('');
+  const [idPartida, setIdPartida] = useState('');
+  const [pantalla, setPantalla] = useState('inicio');
+  const [identificadorPartida, setIdentificadorPartida] = useState('');
+
+  useEffect(() => {
+    // Escucha el evento 'partidaIniciada' desde el servidor
+    socket.on('partidaIniciada', () => {
+      setPantalla('juego');
+    });
+
+    // Limpia los listeners al desmontar el componente
+    return () => {
+      socket.off('partidaIniciada');
+    };
+  }, []);
+
+  const handleCrearPartida = async () => {
+    if (!nombre) {
+      alert('Ingresa un nombre de usuario antes de crear la partida.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8080/api/partida/crear', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nombreUsuario: nombre }),
+      });
+
+      if (response.ok) {
+        const identificadorGenerado = await response.text();
+        setIdentificadorPartida(identificadorGenerado);
+        setPantalla('crearPartida');
+        socket.emit('nuevaPartida', { identificadorPartida, nombreUsuario: nombre });
+      } else {
+        console.error('Error al crear la partida');
+      }
+    } catch (error) {
+      console.error('Error de red:', error);
+    }
+  };
+
+  const handleUnirsePartida = async () => {
+    if (!nombre) {
+      alert('Ingresa un nombre de usuario antes de unirte a la partida.');
+      return;
+    }
+    try {
+      const response = await fetch('http://localhost:8080/api/partida/unirse', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nombre: nombre,
+          identificador: idPartida,
+        }),
+      });
+
+      if (response.ok) {
+        setPantalla('unirsePartida');
+        socket.emit('unirsePartida', { identificadorPartida, nombreUsuario: nombre });
+      } else {
+        console.error('Error al unirse a la partida');
+      }
+    } catch (error) {
+      console.error('Error de red:', error);
+    }
+  };
+
+  const renderPantallaActual = () => {
+    switch (pantalla) {
+      case 'crearPartida':
+        return (
+          <div className="container">
+            <CrearPartida identificadorPartida={identificadorPartida} nombreUsuario={nombre} />
+          </div>
+        );
+      case 'unirsePartida':
+        return (
+          <div className="container">
+            <UnirsePartida identificadorPartida={idPartida} nombreUsuario={nombre} />
+          </div>
+        );
+      case 'juego':
+        return (
+          <div className="container">
+            <p>¡La partida ha comenzado!</p>
           </div>
         );
       default:
