@@ -47,6 +47,7 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
       });
 
       if (response.ok) {
+        
       } else {
         console.error('Error al enviar la letra');
       }
@@ -70,6 +71,7 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
       });
 
       if (response.ok) {
+        
       } else {
         console.error('Error al enviar la palabra');
       }

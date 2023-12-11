@@ -96,7 +96,6 @@ const CrearPartida = ({ identificadorPartida, nombreUsuario }) => {
         <p>Identificador de la Partida: {identificadorPartida}</p>
         <p>Nombre del Usuario: {nombreUsuario}</p>
         <button onClick={handleIniciarPartida}>Iniciar Partida</button>
-        <p>Esperando iniciar partida</p>
       </div>
     </div>
   );
