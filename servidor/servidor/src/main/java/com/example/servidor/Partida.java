@@ -15,6 +15,8 @@ public class Partida {
     private String palabraAdivinar;
     // Lista de char para saber que letras han sido adivinadas
     private List<Character> letrasAdivinadas;
+    // Numero de vidas en una partida
+    private int vidas;
 
     // Constructor, getters y setters
     public Partida(String identificador, String primerUsuario) {
@@ -24,6 +26,15 @@ public class Partida {
         this.iniciada = false;
         this.palabraAdivinar = null;
         this.letrasAdivinadas = new ArrayList<>();
+        this.vidas = 10;
+    }
+
+    public void setVidas(int num){
+        this.vidas = num;
+    }
+
+    public int getVidas(){
+        return this.vidas;
     }
 
     public String getPalabraAdivinar() {
@@ -31,7 +42,11 @@ public class Partida {
     }
 
     public void setPalabraAdivinar(String palabra){
-        this.palabraAdivinar = palabra;
+        this.palabraAdivinar = palabra.toUpperCase();
+        // Inicializamos el valor del arrayList para que no de error al añadir luego las letras
+        for(int i=0; i < palabraAdivinar.length(); i++){
+            letrasAdivinadas.add('_');
+        }
     }
 
     public List<Character> getLetrasAdivinadas() {
@@ -66,19 +81,48 @@ public class Partida {
         return this.nombresUsuarios.size();
     }
 
-    public boolean adivinarLetra(char letra) {
-        // Lógica para verificar si la letra está en la palabra, indexOf devuleve la primera aparicion de letra en palabraAdivinar
-        // CUIDADO, NO SABEMOS SI APARECE DOS VECES
-        int pos = palabraAdivinar.indexOf(letra);
-        // Si la letra no se encunetra en la lista acierto valdra false
-        boolean acierto = (pos != -1);
+    public int adivinarLetra(char letra) {
+        letra = Character.toUpperCase(letra); // Convierte a mayúscula
+        boolean aux = false;
 
-        if (acierto) {
-            letrasAdivinadas.add(pos, letra);
+        // recorremos toda la palabra mirando si la letra introducida esta y guardamos la posicion
+        for (int i = 0; i < palabraAdivinar.length(); i++) {
+            if (palabraAdivinar.charAt(i) == letra) {
+                letrasAdivinadas.add(i, letra);
+                aux = true;
+            }
         }
-        
-        // Para saber si el usuario ha acertado o no
-        return acierto;
+        if(aux){
+            return this.vidas;
+        }
+        else {
+            this.vidas = this.vidas -1;
+            return this.vidas;
+        }
+    }
+
+    public String arrayToString() {
+        StringBuilder resultado = new StringBuilder();
+
+        // Iterar sobre la palabra a adivinar y construir la cadena resultante
+        for (int i = 0; i < palabraAdivinar.length(); i++) {
+            char letraActual = palabraAdivinar.charAt(i);
+
+            // Si la letra está adivinada, agregarla a la cadena resultante
+            if (letrasAdivinadas.contains(letraActual)) {
+                resultado.append(letraActual);
+            } else {
+                // Si la letra no está adivinada, agregar "_" a la cadena resultante
+                resultado.append("_");
+            }
+
+            // Agregar un espacio después de cada letra (excepto la última)
+            if (i < palabraAdivinar.length() - 1) {
+                resultado.append(" ");
+            }
+        }
+
+        return resultado.toString();
     }
 
     public boolean palabraAdivinada() {

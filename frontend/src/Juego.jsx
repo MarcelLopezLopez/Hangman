@@ -19,18 +19,33 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
   const [letra, setLetra] = useState('');
   const [palabraAdivinar, setPalabraAdivinar] = useState('');
   const [longitudPalabra, setLongitudPalabra] = useState(0);
+  const [iniciada, setIniciada] = useState(false);
+  const [adivinado, setAdivinado] = useState('');
+  const [vidas, setVidas] = useState(10);
 
   useEffect(() => {
     // Manejar eventos del servidor
-    socket.on('letra', (mensaje) => {
+    socket.on('letra' + identificadorPartida, (adivinadoHastaAhora) => {
       // Actualizar el estado del juego en el cliente
-      setLetra(mensaje);
+      setAdivinado(adivinadoHastaAhora);
     });
+
+    socket.on('vidas' + identificadorPartida, (misVidas) => {
+      // Actualizar el estado del juego en el cliente
+      setVidas(misVidas);
+    });
+
+    socket.on('palabraRecibida' + identificadorPartida, (length) => {
+      setLongitudPalabra(length);
+      setIniciada(true);
+    });
+
     // Limpia los listeners al desmontar el componente
     return () => {
-      socket.disconnect();
+      socket.off('palabraRecibida')
+      socket.off('letra')
     };
-  }, []);
+  }, [identificadorPartida, palabraAdivinar]);
 
   // Enviar la letra adivinada al servidor
   const handleEnviarLetra = async () => {
@@ -40,14 +55,14 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           letra: letra,
           identificadorPartida: identificadorPartida,
         }),
       });
 
       if (response.ok) {
-        
+
       } else {
         console.error('Error al enviar la letra');
       }
@@ -64,14 +79,14 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           palabraAdivinar: palabraAdivinar,
           identificadorPartida: identificadorPartida,
         }),
       });
 
       if (response.ok) {
-        
+
       } else {
         console.error('Error al enviar la palabra');
       }
@@ -95,20 +110,28 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
           <button onClick={handleElegirPalabara}>Enviar Palabra</button>
         </div>
       ) : (
-        <div>
-          <p>Número de letras en la palabra: {longitudPalabra}</p>
-          <p>Palabra actual: {palabraAdivinar}</p>
-          <input
-            type="text"
-            maxLength={1}
-            value={letra}
-            onChange={(e) => setLetra(e.target.value)}
-          />
-          <button onClick={handleEnviarLetra}>Adivinar</button>
-        </div>
+        iniciada ? (
+          <div>
+            <p>Número de letras en la palabra: {longitudPalabra}</p>
+            <p>Introduzca una letra: {palabraAdivinar}</p>
+            <input
+              type="text"
+              maxLength={1}
+              value={letra}
+              onChange={(e) => setLetra(e.target.value)}
+            />
+            <button onClick={handleEnviarLetra}>Adivinar</button>
+            <h1>{adivinado}</h1>
+            <p>A los jugaodres les quedan: {vidas}</p>
+          </div>
+        ) : (
+          <div></div>
+        )
       )}
     </div>
   );
-};
+}
+
+
 
 export default Juego;

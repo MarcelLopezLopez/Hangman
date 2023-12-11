@@ -126,11 +126,14 @@ package com.example.servidor;
 
 import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.listener.ConnectListener;
+import com.corundumstudio.socketio.listener.DisconnectListener;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -141,7 +144,10 @@ import java.util.Random;
 public class PartidaController {
 
     private List<Partida> partidasEnJuego = new ArrayList<>();
+    private List<SocketIOClient> connectedClients = new ArrayList<>();
     private final SocketIOServer socketIoServer;
+    // Variable para poder enviar datos a los clientes
+    private Map<String, ArrayList<Character>> data = new HashMap<>();
 
     public PartidaController() {
         Configuration config = new Configuration();
@@ -154,10 +160,26 @@ public class PartidaController {
             @Override
             public void onConnect(SocketIOClient client) {
                 System.out.println("Cliente conectado: " + client.getSessionId().toString());
+                connectedClients.add(client);
+            }
+        });
+
+        socketIoServer.addDisconnectListener(new DisconnectListener() {
+            @Override
+            public void onDisconnect(SocketIOClient client) {
+                System.out.println("Cliente desconectado: " + client.getSessionId().toString());
+                connectedClients.remove(client);
             }
         });
 
         socketIoServer.start();
+    }
+
+    private void printConnectedClients() {
+        System.out.println("Clientes conectados:");
+        for (SocketIOClient client : connectedClients) {
+            System.out.println(client.getSessionId().toString());
+        }
     }
 
     @GetMapping("/lista")
@@ -259,11 +281,20 @@ public class PartidaController {
             String identificadorPartida = datos.get("identificadorPartida");
             String letra = datos.get("letra");
 
-            // Lógica para manejar el envío de letra
-            // ...
+            // Buscamos la partida con el identifiacdor que nos mandan
+            Partida partida = buscarPartidaPorIdentificador(identificadorPartida);
 
+            // Aplicamos la funcion para ver si la letra es correcta a partida
+            int vidas = partida.adivinarLetra(letra.charAt(0));
+            System.out.println("Los jugadores tiene: " + vidas + " vidas");
+
+            String direccion = "letra" + identificadorPartida;
+            String direccion2 = "vidas" + identificadorPartida;
+            
             // Enviar un evento de nueva letra a todos los clientes conectados a esta partida
-            socketIoServer.getRoomOperations(identificadorPartida).sendEvent("nuevaLetra", letra);
+            socketIoServer.getBroadcastOperations().sendEvent(direccion, partida.arrayToString());
+            // Enviar un evento de vidas a todos los clientes conectados a esta partida
+            socketIoServer.getBroadcastOperations().sendEvent(direccion2, vidas);
             System.out.println("Letra '" + letra + "' enviada a la partida con ID: " + identificadorPartida);
             
             return ResponseEntity.ok("Letra enviada con éxito");
@@ -278,13 +309,17 @@ public class PartidaController {
             String identificadorPartida = datos.get("identificadorPartida");
             String palabraAdivinar = datos.get("palabraAdivinar");
 
-            // Lógica para manejar la elección de palabra
-            // ...
+            Partida partida = buscarPartidaPorIdentificador(identificadorPartida);
+
+            partida.setPalabraAdivinar(palabraAdivinar);
+
+            String direccion = "palabraRecibida" + identificadorPartida;
 
             // Enviar un evento de nueva palabra a todos los clientes conectados a esta partida
-            socketIoServer.getRoomOperations(identificadorPartida).sendEvent("nuevaPalabra", palabraAdivinar);
+            // Enviar un evento de inicio de partida a todos los clientes conectados a esta partida
+            socketIoServer.getBroadcastOperations().sendEvent(direccion, palabraAdivinar.length());
             System.out.println("Palabra '" + palabraAdivinar + "' elegida en la partida con ID: " + identificadorPartida);
-
+            printConnectedClients();
             return ResponseEntity.ok("Palabra elegida con éxito");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al elegir la palabra");
