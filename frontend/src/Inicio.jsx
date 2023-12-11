@@ -115,7 +115,6 @@ import socket from './Socket';
 
 const Inicio = () => {
   const [nombre, setNombre] = useState('');
-  const [idPartida, setIdPartida] = useState('');
   const [pantalla, setPantalla] = useState('inicio');
   const [identificadorPartida, setIdentificadorPartida] = useState('');
   const [creador, setCreador] = useState(false);
@@ -150,6 +149,7 @@ const Inicio = () => {
       if (response.ok) {
         const identificadorGenerado = await response.text();
         setIdentificadorPartida(identificadorGenerado);
+        setCreador(true);
         setPantalla('crearPartida');
         socket.emit('nuevaPartida', { identificadorPartida, nombreUsuario: nombre });
       } else {
@@ -173,13 +173,14 @@ const Inicio = () => {
         },
         body: JSON.stringify({
           nombre: nombre,
-          identificador: idPartida,
+          identificador: identificadorPartida,
         }),
       });
 
       if (response.ok) {
+        setCreador(false);
         setPantalla('unirsePartida');
-        socket.emit('unirsePartida', { identificadorPartida, nombreUsuario: nombre });
+        socket.emit('unirsePartida', { identificadorPartida: identificadorPartida, nombreUsuario: nombre });
       } else {
         console.error('Error al unirse a la partida');
       }
@@ -199,7 +200,7 @@ const Inicio = () => {
       case 'unirsePartida':
         return (
           <div className="container">
-            <UnirsePartida identificadorPartida={idPartida} nombreUsuario={nombre} />
+            <UnirsePartida identificadorPartida={identificadorPartida} nombreUsuario={nombre} />
           </div>
         );
       case 'juego':
@@ -218,7 +219,7 @@ const Inicio = () => {
             <hr />
             <label>
               ID de Partida para Unirse:
-              <input type="text" value={idPartida} onChange={(e) => setIdPartida(e.target.value)} />
+              <input type="text" value={identificadorPartida} onChange={(e) => setIdentificadorPartida(e.target.value)} />
             </label>
             <button onClick={handleCrearPartida}>Crear Partida</button>
             <button onClick={handleUnirsePartida}>Unirse a Partida</button>
