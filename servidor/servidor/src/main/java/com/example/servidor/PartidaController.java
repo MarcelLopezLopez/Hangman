@@ -253,6 +253,10 @@ public class PartidaController {
         }
     }
 
+    @PostMapping("/letra")
+
+    @PostMapping("/palabra")
+
     private String generarIdentificador() {
         Random random = new Random();
         int numeroAleatorio = 100000 + random.nextInt(900000);

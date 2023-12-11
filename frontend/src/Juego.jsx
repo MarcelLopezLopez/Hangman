@@ -40,7 +40,10 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nombreUsuario: letra }),
+        body: JSON.stringify({ 
+          letra: letra,
+          identificadorPartida: identificadorPartida,
+        }),
       });
 
       if (response.ok) {
@@ -53,8 +56,26 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
   };
 
   // Enviar la palabra cuando el usuario es el creador
-  const handleElegirPalabara = () => {
-    socket.emit('/app/submitWord', palabraAdivinar);
+  const handleElegirPalabara = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/partida/palabra', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          palabraAdivinar: palabraAdivinar,
+          identificadorPartida: identificadorPartida,
+        }),
+      });
+
+      if (response.ok) {
+      } else {
+        console.error('Error al enviar la palabra');
+      }
+    } catch (error) {
+      console.error('Error de red:', error);
+    }
   };
 
   return (
