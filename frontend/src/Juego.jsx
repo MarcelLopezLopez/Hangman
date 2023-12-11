@@ -98,7 +98,7 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
   return (
     <div>
       <p>Nombre del Usuario: {nombreUsuario}</p>
-      <p>Se encuentra ya en la Partida con id: {identificadorPartida}</p>
+      <p>ID de la partida: {identificadorPartida}</p>
       {creador ? (
         <div>
           <p>¡Eres el creador! Ingresa la palabra del juego:</p>
@@ -122,7 +122,7 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
             />
             <button onClick={handleEnviarLetra}>Adivinar</button>
             <h1>{adivinado}</h1>
-            <p>A los jugaodres les quedan: {vidas}</p>
+            <p>Vidas restantes: {vidas}</p>
           </div>
         ) : (
           <div></div>

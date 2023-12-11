@@ -108,6 +108,7 @@ const Inicio = () => {
 export default Inicio;
 */
 import React, { useState, useEffect } from 'react';
+import './Inicio.css';
 import CrearPartida from './CrearPartida';
 import UnirsePartida from './UnirsePartida';
 import Juego from './Juego';
@@ -218,7 +219,7 @@ const Inicio = () => {
             </label>
             <hr />
             <label>
-              ID de Partida para Unirse:
+              ID de la Partida:
               <input type="text" value={identificadorPartida} onChange={(e) => setIdentificadorPartida(e.target.value)} />
             </label>
             <button onClick={handleCrearPartida}>Crear Partida</button>

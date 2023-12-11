@@ -93,8 +93,8 @@ const CrearPartida = ({ identificadorPartida, nombreUsuario }) => {
   return (
     <div>
       <div className="container">
-        <p>Identificador de la Partida: {identificadorPartida}</p>
-        <p>Nombre del Usuario: {nombreUsuario}</p>
+        <p>ID de la Partida: {identificadorPartida}</p>
+        <p>Nombre de Usuario: {nombreUsuario}</p>
         <button onClick={handleIniciarPartida}>Iniciar Partida</button>
       </div>
     </div>

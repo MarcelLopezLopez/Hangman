@@ -70,8 +70,8 @@ const UnirsePartida2 = ({ identificadorPartida, nombreUsuario }) => {
   const renderJuego = () => {
     return (
       <div className="container">
-        <p>Identificador de la Partida: {identificadorPartida}</p>
-        <p>Nombre del Usuario: {nombreUsuario}</p>
+        <p>ID de la Partida: {identificadorPartida}</p>
+        <p>Nombre de Usuario: {nombreUsuario}</p>
       </div>
     );
   }
