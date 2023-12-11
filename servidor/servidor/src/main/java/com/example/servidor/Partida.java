@@ -126,15 +126,19 @@ public class Partida {
     }
 
     public boolean palabraAdivinada() {
-        // Convierte la palabra a adivinar en una lista de caracteres
-        // Para asi poderla comparar con la otra lista de caracteres
-        List<Character> listaPalabra = new ArrayList<>();
-        for (char letra : palabraAdivinar.toCharArray()) {
-            listaPalabra.add(letra);
+        // Verificar si letrasAdivinadas coincide con palabraAdivinar
+        for (int i = 0; i < palabraAdivinar.length(); i++) {
+            char letraPalabra = Character.toUpperCase(palabraAdivinar.charAt(i));
+            char letraAdivinada = (i < letrasAdivinadas.size()) ? Character.toUpperCase(letrasAdivinadas.get(i)) : '_';
+    
+            // Si la letra adivinada no coincide con la letra de la palabra, no está adivinada
+            if (letraAdivinada != letraPalabra) {
+                return false;
+            }
         }
     
-        // Compara las letras adivinadas con la palabra a adivinar
-        return letrasAdivinadas.equals(listaPalabra);
+        // Todas las letras coinciden
+        return true;
     }
 
 }
