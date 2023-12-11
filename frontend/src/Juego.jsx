@@ -12,6 +12,8 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
   const [fin, setFin] = useState(0);
   // Vector que guardara las letras erroneas
   const [letrasErroneas, setLetrasErroneas] = useState([]);
+  // Variable para saber si se ha introducido la palabra
+  const [palabraIntro, setPalabraIntro] = useState(true);
 
   useEffect(() => {
     // Manejar eventos del servidor
@@ -46,6 +48,8 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
       socket.off('letra')
       socket.off('palabraRecibida')
       socket.off('fin')
+      socket.off('vidas')
+      socket.off('error')
     };
   }, [identificadorPartida, palabraAdivinar]);
 
@@ -95,7 +99,7 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
       });
 
       if (response.ok) {
-
+        setPalabraIntro(false);
       } else {
         console.error('Error al enviar la palabra');
       }
@@ -138,13 +142,25 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
       <p>ID de la partida: {identificadorPartida}</p>
       {creador ? (
         <div>
-          <p>¡Eres el creador! Ingresa la palabra del juego:</p>
-          <input
-            type="text"
-            value={palabraAdivinar}
-            onChange={(e) => setPalabraAdivinar(e.target.value)}
-          />
-          <button onClick={handleElegirPalabra}>Enviar Palabra</button>
+          {fin === 0 ? (
+            <div>
+              {palabraIntro ? (
+                <div>
+                  <p>¡Eres el creador! Ingresa la palabra del juego:</p>
+                  <input
+                    type="text"
+                    value={palabraAdivinar}
+                    onChange={(e) => setPalabraAdivinar(e.target.value)}
+                  />
+                  <button onClick={handleElegirPalabra}>Enviar Palabra</button>
+                </div>
+              ) : (
+              <p>Palabra de la partida: {palabraAdivinar}</p>
+              )}
+            </div>
+          ) : (
+            <h1>La partida ha terminado. {fin === 1 ? 'Los usuarios han GANADO!' : 'Los usuarios han PERDIDO!'}</h1>
+          )}
         </div>
       ) : (
         iniciada ? (
