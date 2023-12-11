@@ -136,15 +136,16 @@ public class PartidaController {
             // Buscamos la partida con el identifiacdor que nos mandan
             Partida partida = buscarPartidaPorIdentificador(identificadorPartida);
 
-            int vidas0 = partida.getVidas();
-            // Aplicamos la funcion para ver si la letra es correcta a partida
-            int vidas = partida.adivinarLetra(letra.charAt(0));
-            System.out.println("Los jugadores tiene: " + vidas + " vidas");
-
+            // Variables locales necesarias para evaluacion
             String direccion = "letra" + identificadorPartida;
             String direccion2 = "vidas" + identificadorPartida;
             String direccion3 = "fin" + identificadorPartida;
             String direccion4 = "error" + identificadorPartida;
+            int vidas0 = partida.getVidas();
+
+            // Aplicamos la funcion para ver si la letra es correcta
+            int vidas = partida.adivinarLetra(letra.charAt(0));
+            System.out.println("Los jugadores tiene: " + vidas + " vidas");
             
             // Enviar un evento de nueva letra a todos los clientes conectados a esta partida
             socketIoServer.getBroadcastOperations().sendEvent(direccion, partida.arrayToString());
@@ -158,17 +159,17 @@ public class PartidaController {
             }
             if(partida.palabraAdivinada()){
                 int partidaAcabada = 1;
-                // Reiniciar letrasErroneas cuando la partida termina en victoria
-                errores.clear();
                 socketIoServer.getBroadcastOperations().sendEvent(direccion3, partidaAcabada);
                 System.out.println("Se ha adivinado la PALABRA");
+                // Reiniciar letrasErroneas cuando la partida termina en victoria
+                errores.clear();
             }
             if(partida.getVidas() <= 0){
                 int partidaAcabada = 2;
-                // Reiniciar letrasErroneas cuando la partida termina en derrota)
-                errores.clear();
                 socketIoServer.getBroadcastOperations().sendEvent(direccion3, partidaAcabada);
                 System.out.println("Se ha PERDIDO la partida");
+                // Reiniciar letrasErroneas cuando la partida termina en derrota)
+                errores.clear();
             }
 
             System.out.println("Letra '" + letra + "' enviada a la partida con ID: " + identificadorPartida);
