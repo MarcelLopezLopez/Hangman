@@ -254,8 +254,42 @@ public class PartidaController {
     }
 
     @PostMapping("/letra")
+    public ResponseEntity<String> handleEnviarLetra(@RequestBody Map<String, String> datos) {
+        try {
+            String identificadorPartida = datos.get("identificadorPartida");
+            String letra = datos.get("letra");
+
+            // Lógica para manejar el envío de letra
+            // ...
+
+            // Enviar un evento de nueva letra a todos los clientes conectados a esta partida
+            socketIoServer.getRoomOperations(identificadorPartida).sendEvent("nuevaLetra", letra);
+            System.out.println("Letra '" + letra + "' enviada a la partida con ID: " + identificadorPartida);
+            
+            return ResponseEntity.ok("Letra enviada con éxito");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al enviar la letra");
+        }
+    }
 
     @PostMapping("/palabra")
+    public ResponseEntity<String> handleElegirPalabra(@RequestBody Map<String, String> datos) {
+        try {
+            String identificadorPartida = datos.get("identificadorPartida");
+            String palabraAdivinar = datos.get("palabraAdivinar");
+
+            // Lógica para manejar la elección de palabra
+            // ...
+
+            // Enviar un evento de nueva palabra a todos los clientes conectados a esta partida
+            socketIoServer.getRoomOperations(identificadorPartida).sendEvent("nuevaPalabra", palabraAdivinar);
+            System.out.println("Palabra '" + palabraAdivinar + "' elegida en la partida con ID: " + identificadorPartida);
+
+            return ResponseEntity.ok("Palabra elegida con éxito");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al elegir la palabra");
+        }
+    }
 
     private String generarIdentificador() {
         Random random = new Random();
