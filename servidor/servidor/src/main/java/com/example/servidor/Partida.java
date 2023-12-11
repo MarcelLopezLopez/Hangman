@@ -15,6 +15,8 @@ public class Partida {
     private String palabraAdivinar;
     // Lista de char para saber que letras han sido adivinadas
     private List<Character> letrasAdivinadas;
+    // Lista de char para saber que letras han sido adivinadas auxiliar
+    private List<Character> auxList;
     // Numero de vidas en una partida
     private int vidas;
 
@@ -26,6 +28,7 @@ public class Partida {
         this.iniciada = false;
         this.palabraAdivinar = null;
         this.letrasAdivinadas = new ArrayList<>();
+        this.auxList = new ArrayList<>();
         this.vidas = 10;
     }
 
@@ -89,6 +92,7 @@ public class Partida {
         for (int i = 0; i < palabraAdivinar.length(); i++) {
             if (palabraAdivinar.charAt(i) == letra) {
                 letrasAdivinadas.add(i, letra);
+                auxList.add(i, letra);
                 aux = true;
             }
         }
@@ -139,6 +143,13 @@ public class Partida {
     
         // Todas las letras coinciden
         return true;
+        
+        /* 
+        if(auxList.size() == palabraAdivinar.length()){
+            return true;
+        }
+        return false;
+        */
     }
 
 }
