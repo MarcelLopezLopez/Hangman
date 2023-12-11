@@ -1,60 +1,69 @@
 /* Estilos generales */
+
+/* Establece el estilo para el cuerpo de la página */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  
-  .container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  /* Estilos para los elementos del formulario */
-  label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-  }
-  
-  button {
-    background-color: #4caf50;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  /* Estilos específicos para el formulario de unirse a la partida */
-  hr {
-    margin: 20px 0;
-    border: 0;
-    border-top: 1px solid #ccc;
-  }
-  
-  /* Estilos específicos para el mensaje de bienvenida */
-  .message {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
+  font-family: 'Arial', sans-serif; /* Utiliza la fuente Arial o una fuente genérica sin serifas si Arial no está disponible */
+  background-color: #f4f4f4; /* Fija el color de fondo de la página */
+  margin: 0; /* Elimina los márgenes predeterminados del cuerpo */
+  padding: 0; /* Elimina el relleno predeterminado del cuerpo */
+  display: flex; /* Utiliza el modelo de caja flexible para organizar los elementos en filas o columnas */
+  align-items: center; /* Alinea los elementos verticalmente en el centro */
+  justify-content: center; /* Alinea los elementos horizontalmente en el centro */
+  height: 100vh; /* Establece la altura al 100% de la altura visible del viewport */
+}
+
+/* Establece el estilo para el contenedor principal */
+.container {
+  background-color: #fff; /* Fija el color de fondo del contenedor principal */
+  padding: 20px; /* Agrega relleno interno al contenedor principal */
+  border-radius: 10px; /* Establece esquinas redondeadas para el contenedor */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Agrega una sombra ligera al contenedor */
+  text-align: center; /* Alinea el texto en el centro dentro del contenedor */
+}
+
+/* Estilos para los elementos del formulario */
+
+/* Establece el estilo para las etiquetas del formulario */
+label {
+  display: block; /* Hace que las etiquetas ocupen un bloque completo */
+  margin-bottom: 10px; /* Agrega espacio en la parte inferior de las etiquetas */
+}
+
+/* Establece el estilo para los campos de entrada del formulario */
+input {
+  width: 100%; /* Hace que los campos de entrada ocupen el 100% del ancho disponible */
+  padding: 8px; /* Agrega relleno interno a los campos de entrada */
+  margin-bottom: 20px; /* Agrega espacio en la parte inferior de los campos de entrada */
+  box-sizing: border-box; /* Incluye el relleno y el borde en el ancho y alto total del elemento */
+}
+
+/* Establece el estilo para los botones del formulario */
+button {
+  background-color: #4caf50; /* Fija el color de fondo del botón */
+  color: #fff; /* Fija el color del texto del botón */
+  padding: 10px 20px; /* Agrega relleno interno al botón */
+  border: none; /* Elimina el borde del botón */
+  border-radius: 5px; /* Establece esquinas redondeadas para el botón */
+  cursor: pointer; /* Cambia el cursor a una mano al pasar sobre el botón */
+}
+
+/* Cambia el estilo del botón al pasar el mouse sobre él */
+button:hover {
+  background-color: #45a049; /* Cambia el color de fondo al pasar el mouse sobre el botón */
+}
+
+
+/* Establece el estilo para la línea divisoria en el formulario de unirse a la partida */
+hr {
+  margin: 20px 0; /* Agrega espacio en la parte superior e inferior de la línea divisoria */
+  border: 0; /* Elimina el borde de la línea divisoria */
+  border-top: 1px solid #ccc; /* Agrega una línea divisoria superior con color gris claro */
+}
+
+
+/* Establece el estilo para el mensaje de bienvenida */
+.message {
+  font-size: 18px; /* Establece el tamaño de fuente del mensaje de bienvenida */
+  color: #333; /* Fija el color del texto del mensaje de bienvenida */
+  margin-bottom: 20px; /* Agrega espacio en la parte inferior del mensaje de bienvenida */
+}

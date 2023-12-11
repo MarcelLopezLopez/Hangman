@@ -1,22 +1,33 @@
+// Importa React, useState y useEffect desde la librería 'react'
 import React, { useState, useEffect } from 'react';
+// Importa el objeto 'socket' desde el archivo 'Socket'
 import socket from './Socket';
 
+// Definimos el componente funcional 'Juego' que recibe propiedades
 const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
+  // Variable donde guardaremos la letra a adivinar que introduce el usuario por teclado
   const [letra, setLetra] = useState('');
+  // Variable donde guardaremos la palabra que introduce el creador para que sea adivinada
   const [palabraAdivinar, setPalabraAdivinar] = useState('');
+  // Variable para guardar la longitud de la palabra a adivinar
   const [longitudPalabra, setLongitudPalabra] = useState(0);
+  // Variable para manejar si la partida esta iniciada o no
   const [iniciada, setIniciada] = useState(false);
+  // Variable para saber si se ha adivinado la palabra
   const [adivinado, setAdivinado] = useState('');
+  // Variable para guardar las vidas
   const [vidas, setVidas] = useState(10);
   // Variable que guarda el estado de la partida, 0 en progreso, 1 se ha ganado, 2 se ha perdido
   const [fin, setFin] = useState(0);
-  // Vector que guardara las letras erroneas
+  // Vector que guarda las letras erroneas
   const [letrasErroneas, setLetrasErroneas] = useState([]);
   // Variable para saber si se ha introducido la palabra
   const [palabraIntro, setPalabraIntro] = useState(true);
 
+  // Efecto secundario que se ejecuta después de que el componente ha sido montado
   useEffect(() => {
     // Manejar eventos del servidor
+    
     socket.on('letra' + identificadorPartida, (adivinadoHastaAhora) => {
       // Actualizar el estado del juego en el cliente
       setAdivinado(adivinadoHastaAhora);
@@ -68,7 +79,7 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
       });
 
       if (response.ok) {
-
+        // Operación adicional en caso de éxito, si es necesario
       } else {
         console.error('Error al enviar la letra');
       }
@@ -77,7 +88,7 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
     }
   };
 
-  // Funcion para pulsando la tecla enter en vez de pulsar el boton
+  // Funcion para pulsar la tecla Enter en vez de pulsar el botón
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleEnviarLetra();
