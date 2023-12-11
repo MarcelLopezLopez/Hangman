@@ -71,6 +71,12 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleEnviarLetra();
+    }
+  };
+
   // Enviar la palabra cuando el usuario es el creador
   const handleElegirPalabara = async () => {
     try {
@@ -119,7 +125,9 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
               maxLength={1}
               value={letra}
               onChange={(e) => setLetra(e.target.value)}
+              onKeyPress={handleKeyPress} // Nuevo manejo de tecla
             />
+
             <button onClick={handleEnviarLetra}>Adivinar</button>
             <h1>{adivinado}</h1>
             <p>Vidas restantes: {vidas}</p>
