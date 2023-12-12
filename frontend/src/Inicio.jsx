@@ -144,7 +144,7 @@ const Inicio = () => {
             </label>
             <hr />
             <label>
-              ID de la Partida:
+              ID de la Partida que quiere unirse:
               <input type="text" value={identificadorPartida} onChange={(e) => setIdentificadorPartida(e.target.value)} />
             </label>
             <button onClick={handleCrearPartida}>Crear Partida</button>
