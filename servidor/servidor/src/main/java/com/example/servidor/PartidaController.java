@@ -27,8 +27,6 @@ public class PartidaController {
     private List<SocketIOClient> connectedClients = new ArrayList<>();
     // Variable del servidor para poder manejar comunicacion
     private final SocketIOServer socketIoServer;
-    // ArrayList que contiene los caracteres fallados
-    private List<Character> errores = new ArrayList<>();
 
     public PartidaController() {
         // Seleccionamos la configuracion de nuestro servidor
@@ -183,11 +181,8 @@ public class PartidaController {
 
             // Si el numero de vidas ha cambiado es que se ha perdido una vida
             if(vidas0 != vidas) {
-                // Añadimos la letra como erronea
-                errores.add(letra.charAt(0));
-                errores.add('-');
-                // Enviamos evento de perdida de vida
-                socketIoServer.getBroadcastOperations().sendEvent(direccion4, errores);
+                // Enviamos evento de perdida de vida y mandamos las letras erroneas
+                socketIoServer.getBroadcastOperations().sendEvent(direccion4, partida.getErrores());
             }
             // Miramos si la palabra ha sido adivinada
             if(partida.palabraAdivinada()){
@@ -198,7 +193,7 @@ public class PartidaController {
                 // Mensaje de control
                 System.out.println("Se ha adivinado la PALABRA");
                 // Reiniciar letrasErroneas cuando la partida termina en victoria
-                errores.clear();
+                partida.vaciarErrores();
             }
             // Miramos si se han agotado las vidas
             if(partida.getVidas() <= 0){
@@ -209,7 +204,7 @@ public class PartidaController {
                 // Mensaje de control por terminal
                 System.out.println("Se ha PERDIDO la partida");
                 // Reiniciar letrasErroneas cuando la partida termina en derrota)
-                errores.clear();
+                partida.vaciarErrores();
             }
             // Mensaje de control por terminal con la letra enviada
             System.out.println("Letra '" + letra + "' enviada a la partida con ID: " + identificadorPartida);

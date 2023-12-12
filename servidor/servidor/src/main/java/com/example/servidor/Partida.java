@@ -15,6 +15,8 @@ public class Partida {
     private String palabraAdivinar;
     // Lista de char para saber que letras han sido adivinadas
     private List<Character> letrasAdivinadas;
+    // ArrayList que contiene los caracteres fallados
+    private List<Character> errores;
     // Numero de vidas en una partida
     private int vidas;
 
@@ -26,7 +28,20 @@ public class Partida {
         this.iniciada = false;
         this.palabraAdivinar = null;
         this.letrasAdivinadas = new ArrayList<>();
+        this.errores = new ArrayList<>();
         this.vidas = 10;
+    }
+
+    public void setErrores(Character letra){
+        errores.add(letra);
+    }
+
+    public List<Character> getErrores(){
+        return errores;
+    }
+
+    public void vaciarErrores(){
+        errores.clear();
     }
 
     public void setVidas(int num) {
@@ -98,6 +113,8 @@ public class Partida {
             return this.vidas;
         } else {
             this.vidas = this.vidas - 1;
+            errores.add(letra);
+            errores.add('-');
             return this.vidas;
         }
     }
