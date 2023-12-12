@@ -80,6 +80,7 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
 
       if (response.ok) {
         // Operación adicional en caso de éxito, si es necesario
+        setLetra('');
       } else {
         console.error('Error al enviar la letra');
       }
@@ -92,6 +93,13 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleEnviarLetra();
+    }
+  };
+
+  // Funcion para pulsar la tecla Enter en vez de pulsar el botón
+  const handleKeyPress2 = (e) => {
+    if (e.key === 'Enter') {
+      handleElegirPalabra();
     }
   };
 
@@ -162,6 +170,7 @@ const Juego = ({ creador, nombreUsuario, identificadorPartida }) => {
                     type="text"
                     value={palabraAdivinar}
                     onChange={(e) => setPalabraAdivinar(e.target.value)}
+                    onKeyPress={handleKeyPress2} // Nuevo manejo de tecla
                   />
                   <button onClick={handleElegirPalabra}>Enviar Palabra</button>
                 </div>

@@ -15,8 +15,6 @@ public class Partida {
     private String palabraAdivinar;
     // Lista de char para saber que letras han sido adivinadas
     private List<Character> letrasAdivinadas;
-    // Lista de char para saber que letras han sido adivinadas auxiliar
-    private List<Character> auxList;
     // Numero de vidas en una partida
     private int vidas;
 
@@ -28,15 +26,14 @@ public class Partida {
         this.iniciada = false;
         this.palabraAdivinar = null;
         this.letrasAdivinadas = new ArrayList<>();
-        this.auxList = new ArrayList<>();
         this.vidas = 10;
     }
 
-    public void setVidas(int num){
+    public void setVidas(int num) {
         this.vidas = num;
     }
 
-    public int getVidas(){
+    public int getVidas() {
         return this.vidas;
     }
 
@@ -44,10 +41,11 @@ public class Partida {
         return palabraAdivinar;
     }
 
-    public void setPalabraAdivinar(String palabra){
+    public void setPalabraAdivinar(String palabra) {
         this.palabraAdivinar = palabra.toUpperCase();
-        // Inicializamos el valor del arrayList para que no de error al añadir luego las letras
-        for(int i=0; i < palabraAdivinar.length(); i++){
+        // Inicializamos el valor del arrayList para que no de error al añadir luego las
+        // letras
+        for (int i = 0; i < palabraAdivinar.length(); i++) {
             letrasAdivinadas.add('_');
         }
     }
@@ -56,14 +54,14 @@ public class Partida {
         return letrasAdivinadas;
     }
 
-    public boolean getEstado(){
+    public boolean getEstado() {
         return iniciada;
     }
 
-    public void setEstado(boolean estado){
+    public void setEstado(boolean estado) {
         this.iniciada = estado;
     }
-    
+
     public String getIdentificador() {
         return identificador;
     }
@@ -80,7 +78,7 @@ public class Partida {
         this.nombresUsuarios.add(nombreUsuario);
     }
 
-    public int numJugadors(){
+    public int numJugadors() {
         return this.nombresUsuarios.size();
     }
 
@@ -88,19 +86,18 @@ public class Partida {
         letra = Character.toUpperCase(letra); // Convierte a mayúscula
         boolean aux = false;
 
-        // recorremos toda la palabra mirando si la letra introducida esta y guardamos la posicion
+        // recorremos toda la palabra mirando si la letra introducida esta y guardamos
+        // la posicion
         for (int i = 0; i < palabraAdivinar.length(); i++) {
             if (palabraAdivinar.charAt(i) == letra) {
                 letrasAdivinadas.add(i, letra);
-                auxList.add(i, letra);
                 aux = true;
             }
         }
-        if(aux){
+        if (aux) {
             return this.vidas;
-        }
-        else {
-            this.vidas = this.vidas -1;
+        } else {
+            this.vidas = this.vidas - 1;
             return this.vidas;
         }
     }
@@ -131,25 +128,13 @@ public class Partida {
 
     public boolean palabraAdivinada() {
         // Verificar si letrasAdivinadas coincide con palabraAdivinar
-        for (int i = 0; i < palabraAdivinar.length(); i++) {
-            char letraPalabra = Character.toUpperCase(palabraAdivinar.charAt(i));
-            char letraAdivinada = (i < letrasAdivinadas.size()) ? Character.toUpperCase(letrasAdivinadas.get(i)) : '_';
-    
-            // Si la letra adivinada no coincide con la letra de la palabra, no está adivinada
-            if (letraAdivinada != letraPalabra) {
-                return false;
-            }
-        }
-    
-        // Todas las letras coinciden
-        return true;
-        
-        /* 
-        if(auxList.size() == palabraAdivinar.length()){
-            return true;
-        }
-        return false;
-        */
+        // Convierte la palabra adivinada y la palabra oculta a mayúsculas para
+        // compararlas
+        String adivinada = arrayToString().replaceAll(" ", "").toUpperCase();
+        String palabra = palabraAdivinar.replaceAll(" ", "").toUpperCase();
+
+        // Compara las dos cadenas
+        return adivinada.equals(palabra);
     }
 
 }
