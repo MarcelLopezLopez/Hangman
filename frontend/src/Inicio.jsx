@@ -61,8 +61,6 @@ const Inicio = () => {
         setIdentificadorPartida(identificadorGenerado);
         setCreador(true);
         setPantalla('crearPartida');
-        // Enviamos un evento 'nuevaPartida' al servidor a través de socket
-        socket.emit('nuevaPartida', { identificadorPartida, nombreUsuario: nombre });
       } else {
         console.error('Error al crear la partida');
       }
@@ -99,8 +97,6 @@ const Inicio = () => {
         // Actualizamos el estado de las variables creador y pantalla
         setCreador(false);
         setPantalla('unirsePartida');
-        // Envia un evento 'unirsePartida' al servidor a través de socket
-        socket.emit('unirsePartida', { identificadorPartida: identificadorPartida, nombreUsuario: nombre });
       } else {
         console.error('Error al unirse a la partida');
       }
