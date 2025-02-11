@@ -1,20 +1,24 @@
-# SAD_Proyecto
-Aquí realizaremos el proyecto de la asignatura de SAD, este será el juego del "Ahorcado"
+# Hangman
 
-Instalaciones necesarias:
-1. Instalar ReactWeb
- 1.1 Windows: Descargar node.js en la siguiente pagina: https://nodejs.org/en/download/.
-              Instalar Create React App: npm install -g create-react-app
-              Per executar: npm start
- 1.2 Linux: Instalar npm: sudo apt install npm, se puede verificar con npm --version
-            Instala la utilidad create-react-app: sudo npm -g install create-react-app
-2. En caso de usar VisualStudio, recomendamos la instaclacion de los siguientes paquetes:
-    2.1 Extension Pack for Java
-    2.2 Spring Boot Extension Pack
-3. Instalar Maven para poder compilar y ejectuar SpringBoot
-    Visitar la siguiente pagina web: https://maven.apache.org/download.cgi
+Here we will develop the project for the SAD course. This project will be the "Hangman" game.
+Necessary installations:
 
-4. Para comunicacion a tiempo real hacer lo siguinete:
-    En el cliente, en /frontend> npm isntall socket.io-client
-    En el
+1. Install ReactWeb
+ 1.1 Windows: Download node.js from the following page: https://nodejs.org/en/download/.
+ Install Create React App: npm install -g create-react-app
+ To run: npm start
+
+ 1.2 Linux: Install npm: sudo apt install npm, you can verify with npm --version
+ Install the create-react-app utility: sudo npm -g install create-react-app
+
+2. If using Visual Studio, we recommend installing the following packages:
+ 2.1 Extension Pack for Java
+ 2.2 Spring Boot Extension Pack
+
+3. Install Maven to compile and run SpringBoot
+ Visit the following website: https://maven.apache.org/download.cgi
+
+4. For real-time communication, do the following:
+In the client, in /frontend> npm install socket.io-client
+In the
 
